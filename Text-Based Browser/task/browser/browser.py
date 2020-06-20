@@ -53,10 +53,18 @@ else:
     except FileExistsError:
         pass
     dir = args[1]
+    history = []
     while True:
         link = input()
         if link == "exit":
             break
+        if link == "back":
+            if len(history) == 0:
+                continue
+            history.pop()
+            with open(history.pop()) as url:
+                print(url.read())
+                continue
         status = check_link(link, dir)
         if status == -1:
             print("Error: Incorrect URL")
@@ -66,15 +74,18 @@ else:
             if link == "bloomberg.com":
                 url.write(bloomberg_com)
                 print(bloomberg_com)
+                history.append(filepath)
             elif link == "nytimes.com":
                 url.write(nytimes_com)
                 print(nytimes_com)
+                history.append(filepath)
             else:
                 print("Error: Incorrect URL")
                 # url.write("The link " + link + " exists")
                 # print("The link " + link + " exists")
             url.close()
         else:
-            url = open((dir + "\\" + status), "r")
+            url = open((dir + "\\" + status + ".txt"), "r")
             print(url.read())
             url.close()
+            history.append(filepath)
