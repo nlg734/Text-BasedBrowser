@@ -121,6 +121,31 @@ files:
 
     TextBasedBrowserTest('browser.browser').run_tests()
   learner_created: false
+- name: browser/browser.py
+  visible: true
+  text: "\nnytimes_com = '''\nThis New Liquid Is Magnetic, and Mesmerizing\n\nScientists\
+    \ have created “soft” magnets that can flow \nand change shape, and that could\
+    \ be a boon to medicine \nand robotics. (Source: New York Times)\n\n\nMost Wikipedia\
+    \ Profiles Are of Men. This Scientist Is Changing That.\n\nJessica Wade has added\
+    \ nearly 700 Wikipedia biographies for\n important female and minority scientists\
+    \ in less than two \n years.\n\n'''\n\nbloomberg_com = '''\nThe Space Race: From\
+    \ Apollo 11 to Elon Musk\n\nIt's 50 years since the world was gripped by historic\
+    \ images\n of Apollo 11, and Neil Armstrong -- the first man to walk \n on the\
+    \ moon. It was the height of the Cold War, and the charts\n were filled with David\
+    \ Bowie's Space Oddity, and Creedence's \n Bad Moon Rising. The world is a very\
+    \ different place than \n it was 5 decades ago. But how has the space race changed\
+    \ since\n the summer of '69? (Source: Bloomberg)\n\n\nTwitter CEO Jack Dorsey\
+    \ Gives Talk at Apple Headquarters\n\nTwitter and Square Chief Executive Officer\
+    \ Jack Dorsey \n addressed Apple Inc. employees at the iPhone maker’s headquarters\n\
+    \ Tuesday, a signal of the strong ties between the Silicon Valley giants.\n'''\n\
+    \n# write your code here\nwhile True:\n    option = input()\n\n    if \"bloomberg.com\"\
+    \ == option:\n        print(bloomberg_com)\n    elif \"nytimes.com\" == option:\n\
+    \        print(nytimes_com)\n    elif \"exit\" == option:\n        break\n   \
+    \ else:\n        \"Invalid option\"\n"
+  learner_created: true
+- name: tb_tabs/blo.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/79/stages/437/implement
-status: Unchecked
+status: Solved
 record: -1

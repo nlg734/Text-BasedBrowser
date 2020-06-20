@@ -1,3 +1,5 @@
+import sys
+import os
 
 nytimes_com = '''
 This New Liquid Is Magnetic, and Mesmerizing
@@ -35,14 +37,44 @@ Twitter and Square Chief Executive Officer Jack Dorsey
 '''
 
 # write your code here
-while True:
-    option = input()
 
-    if "bloomberg.com" == option:
-        print(bloomberg_com)
-    elif "nytimes.com" == option:
-        print(nytimes_com)
-    elif "exit" == option:
-        break
-    else:
-        "Invalid option"
+def check_link(link, dir):
+    for file in os.listdir(os.fsencode(dir)):
+        if os.fsdecode(file).startswith(link):
+            return os.fsdecode(file)
+    return link[::-1].find(".")
+
+args = sys.argv
+if len(args) != 2:
+    print("Please give a directory.")
+else:
+    try:
+        os.mkdir(args[1])
+    except FileExistsError:
+        pass
+    dir = args[1]
+    while True:
+        link = input()
+        if link == "exit":
+            break
+        status = check_link(link, dir)
+        if status == -1:
+            print("Error: Incorrect URL")
+        elif isinstance(status, int):
+            filepath = dir + "\\" + link[:status] + ".txt"
+            url = open(filepath, "w")
+            if link == "bloomberg.com":
+                url.write(bloomberg_com)
+                print(bloomberg_com)
+            elif link == "nytimes.com":
+                url.write(nytimes_com)
+                print(nytimes_com)
+            else:
+                print("Error: Incorrect URL")
+                # url.write("The link " + link + " exists")
+                # print("The link " + link + " exists")
+            url.close()
+        else:
+            url = open((dir + "\\" + status), "r")
+            print(url.read())
+            url.close()
