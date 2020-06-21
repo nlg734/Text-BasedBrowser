@@ -1,6 +1,7 @@
 import sys
 import os
 import requests
+from bs4 import BeautifulSoup
 
 
 def check_link(webpage, fold):
@@ -10,15 +11,18 @@ def check_link(webpage, fold):
     return webpage[::-1].find(".")
 
 
-args = sys.argv
-if len(args) != 2:
-    print("Please give a directory.")
-else:
-    try:
-        os.mkdir(args[1])
-    except FileExistsError:
-        pass
-    folder = args[1]
+def remove_tags(text):
+    parsed_text = ""
+    soup = BeautifulSoup(text, "html.parser")
+    tags = ['p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title']
+    tagged = soup.find_all(tags)
+    for tag in tagged:
+        parsed_text = parsed_text + tag.get_text() + "\n"
+    return parsed_text
+
+
+
+def main(folder):
     history = []
     while True:
         link = input()
@@ -41,8 +45,10 @@ else:
                 page = requests.get(link)
             else:
                 page = requests.get("https://" + link)
-            print(page.text)
-            url.write(page.text)
+            url.write(remove_tags(page.text))
+            url.close()
+            url = open(filepath)
+            print(url.read())
             history.append(filepath)
             url.close()
         else:
@@ -51,3 +57,14 @@ else:
             print(url.read())
             url.close()
             history.append(filepath)
+
+
+args = sys.argv
+if len(args) != 2:
+    print("Please give a directory.")
+else:
+    try:
+        os.mkdir(args[1])
+    except FileExistsError:
+        pass
+    main(args[1])
