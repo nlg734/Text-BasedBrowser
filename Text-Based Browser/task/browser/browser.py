@@ -2,6 +2,9 @@ import sys
 import os
 import requests
 from bs4 import BeautifulSoup
+from colorama import init, Fore
+
+init()
 
 
 def check_link(webpage, fold):
@@ -12,12 +15,15 @@ def check_link(webpage, fold):
 
 
 def remove_tags(text):
-    parsed_text = ""
+    parsed_text = []
     soup = BeautifulSoup(text, "html.parser")
     tags = ['p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title']
     tagged = soup.find_all(tags)
     for tag in tagged:
-        parsed_text = parsed_text + tag.get_text() + "\n"
+        if tag.name == "a":
+            parsed_text.append("<a>" + tag.get_text() + "\n")
+        else:
+            parsed_text.append(tag.get_text() + "\n")
     return parsed_text
 
 
@@ -45,16 +51,25 @@ def main(folder):
                 page = requests.get(link)
             else:
                 page = requests.get("https://" + link)
-            url.write(remove_tags(page.text))
-            url.close()
-            url = open(filepath)
-            print(url.read())
+            for line in remove_tags(page.text):
+                if "<a>" in line:
+                    url.write(line)
+                    line = line.strip("<a>")
+                    print(Fore.BLUE + line)
+                else:
+                    url.write(line)
+                    print(line)
             history.append(filepath)
             url.close()
         else:
             filepath = folder + "\\" + status + ".txt"
             url = open(filepath, "r")
-            print(url.read())
+            for line in url:
+                if "<a>" in line:
+                    line = line.strip("<a>")
+                    print(Fore.BLUE + line)
+                else:
+                    print(line)
             url.close()
             history.append(filepath)
 
